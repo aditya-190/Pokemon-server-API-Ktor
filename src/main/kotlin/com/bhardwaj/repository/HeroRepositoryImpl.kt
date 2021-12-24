@@ -384,9 +384,11 @@ class HeroRepositoryImpl : HeroRepository {
         return ApiResponse(
             success = true,
             message = "OK",
+            totalHeroes = heroes.size,
+            returnedHeroes = provideHeroes(heroes = heroes, page = page, limit = limit).size,
             previousPage = calculatePage(heroes = heroes, page = page, limit = limit)[PREVIOUS_PAGE_KEY],
             nextPage = calculatePage(heroes = heroes, page = page, limit = limit)[NEXT_PAGE_KEY],
-            heroes = provideHeroes(heroes = heroes, page = page, limit = limit)
+            heroes = provideHeroes(heroes = heroes, page = page, limit = limit),
         )
     }
 
