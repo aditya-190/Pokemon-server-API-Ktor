@@ -15,6 +15,11 @@ application {
     mainClass.set("io.ktor.server.netty.EngineMain")
 }
 
+// Necessary For Deploying to Heroku.
+tasks.create("stage") {
+    dependsOn("installDist")
+}
+
 repositories {
     mavenCentral()
 }
