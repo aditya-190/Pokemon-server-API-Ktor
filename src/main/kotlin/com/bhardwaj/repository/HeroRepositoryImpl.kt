@@ -392,6 +392,7 @@ class HeroRepositoryImpl : HeroRepository {
             returnedHeroes = provideHeroesResult.size,
             previousPage = calculatedPageResult[PREVIOUS_PAGE_KEY],
             nextPage = calculatedPageResult[NEXT_PAGE_KEY],
+            lastUpdated = System.currentTimeMillis(),
             heroes = provideHeroesResult,
         )
     }
@@ -428,16 +429,22 @@ class HeroRepositoryImpl : HeroRepository {
 
     override suspend fun searchHero(name: String?, page: Int, limit: Int): ApiResponse {
         val allHeroesThatMatches = findHeroes(name)
-        val calculatedPageResult = calculatePage(heroes = allHeroesThatMatches, page = page, limit = limit)
-        val provideHeroesResult = provideHeroes(heroes = allHeroesThatMatches, page = page, limit = limit)
+        var calculatedPageResult: Map<String, Int?>? = null
+        var provideHeroesResult: List<Hero> = emptyList()
+
+        if (allHeroesThatMatches.size > 1) {
+            calculatedPageResult = calculatePage(heroes = allHeroesThatMatches, page = page, limit = limit)
+            provideHeroesResult = provideHeroes(heroes = allHeroesThatMatches, page = page, limit = limit)
+        }
 
         return ApiResponse(
             success = true,
             message = "OK",
-            totalHeroes = totalNumberOfHeroes,
-            returnedHeroes = allHeroesThatMatches.size,
-            previousPage = calculatedPageResult[PREVIOUS_PAGE_KEY],
-            nextPage = calculatedPageResult[NEXT_PAGE_KEY],
+            totalHeroes = allHeroesThatMatches.size,
+            returnedHeroes = provideHeroesResult.size,
+            previousPage = calculatedPageResult?.get(PREVIOUS_PAGE_KEY),
+            nextPage = calculatedPageResult?.get(NEXT_PAGE_KEY),
+            lastUpdated = System.currentTimeMillis(),
             heroes = provideHeroesResult
         )
     }
