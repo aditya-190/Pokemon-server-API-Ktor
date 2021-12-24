@@ -12,7 +12,10 @@ fun Route.searchHeroes() {
 
     get("/searchHero") {
         val name = call.request.queryParameters["name"]
-        val apiResponse = heroRepository.searchHero(name)
+        val page = call.request.queryParameters["page"]?.toInt() ?: 1
+        val limit = call.request.queryParameters["limit"]?.toInt() ?: 3
+
+        val apiResponse = heroRepository.searchHero(name = name, page = page, limit = limit)
         call.respond(
             message = apiResponse,
             status = HttpStatusCode.OK

@@ -90,6 +90,8 @@ class ApplicationTest {
                 val expected = ApiResponse(
                     success = true,
                     message = "OK",
+                    totalHeroes = 15,
+                    returnedHeroes = 0,
                     previousPage = null,
                     nextPage = null,
                     heroes = emptyList()

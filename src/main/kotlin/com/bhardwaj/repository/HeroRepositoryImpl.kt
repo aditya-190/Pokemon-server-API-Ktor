@@ -379,16 +379,20 @@ class HeroRepositoryImpl : HeroRepository {
             )
         )
     )
+    private val totalNumberOfHeroes = heroes.size
 
     override suspend fun getAllHeroes(page: Int, limit: Int): ApiResponse {
+        val calculatedPageResult = calculatePage(heroes = heroes, page = page, limit = limit)
+        val provideHeroesResult = provideHeroes(heroes = heroes, page = page, limit = limit)
+
         return ApiResponse(
             success = true,
             message = "OK",
-            totalHeroes = heroes.size,
-            returnedHeroes = provideHeroes(heroes = heroes, page = page, limit = limit).size,
-            previousPage = calculatePage(heroes = heroes, page = page, limit = limit)[PREVIOUS_PAGE_KEY],
-            nextPage = calculatePage(heroes = heroes, page = page, limit = limit)[NEXT_PAGE_KEY],
-            heroes = provideHeroes(heroes = heroes, page = page, limit = limit),
+            totalHeroes = totalNumberOfHeroes,
+            returnedHeroes = provideHeroesResult.size,
+            previousPage = calculatedPageResult[PREVIOUS_PAGE_KEY],
+            nextPage = calculatedPageResult[NEXT_PAGE_KEY],
+            heroes = provideHeroesResult,
         )
     }
 
@@ -422,11 +426,19 @@ class HeroRepositoryImpl : HeroRepository {
         return allHeroes[page - 1]
     }
 
-    override suspend fun searchHero(name: String?): ApiResponse {
+    override suspend fun searchHero(name: String?, page: Int, limit: Int): ApiResponse {
+        val allHeroesThatMatches = findHeroes(name)
+        val calculatedPageResult = calculatePage(heroes = allHeroesThatMatches, page = page, limit = limit)
+        val provideHeroesResult = provideHeroes(heroes = allHeroesThatMatches, page = page, limit = limit)
+
         return ApiResponse(
             success = true,
             message = "OK",
-            heroes = findHeroes(name)
+            totalHeroes = totalNumberOfHeroes,
+            returnedHeroes = allHeroesThatMatches.size,
+            previousPage = calculatedPageResult[PREVIOUS_PAGE_KEY],
+            nextPage = calculatedPageResult[NEXT_PAGE_KEY],
+            heroes = provideHeroesResult
         )
     }
 
