@@ -13,7 +13,7 @@ Main Features & Learnings -
 - Support to Pagination - HeroesPerPage(limit) & PagerPerRequest(page).
 - Used Dependency Injection using Koin, Supports Monitoring and Status Page.
 - Testcases added for each endpoints and also each endpoint is tested on Postman as well.
-- Deployed to Heroku - https://pokemon-server-api.herokuapp.com/
+- ~~Deployed to Heroku - https://pokemon-server-api.herokuapp.com/~~ **(Not Available as free Heroku Dynos are no longer supported now)**
 
 ## 📽 Sample Demo:
 https://user-images.githubusercontent.com/63164037/147974392-25014f6a-d75b-4275-b432-4759e69584ca.mov
